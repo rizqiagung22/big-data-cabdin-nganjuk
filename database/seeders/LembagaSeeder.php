@@ -15,8 +15,17 @@ class LembagaSeeder extends Seeder
     {
         // Data dari file Excel
         $data = [
-            ['nama_satuan_pendidikan' => 'SLB AL - KHARIQ', 'npsn' => '69978385', 'bentuk_pendidikan' => 'SLB', 'status_sekolah' => 'Swasta'],
-            ['nama_satuan_pendidikan' => 'SLB AL IKHLAS', 'npsn' => '70007597', 'bentuk_pendidikan' => 'SLB', 'status_sekolah' => 'Swasta'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+            ['nama_satuan_pendidikan' => 'adadadasdadacxzcxzcaddadadcxczxczczdasdasd', 'npsn' => 'aa2', 'bentuk_pendidikan' => 'aa3', 'status_sekolah' => 'aa4'],
+
+
+            ['nama_satuan_pendidikan' => 'aa', 'npsn' => '70007597', 'bentuk_pendidikan' => 'SLB', 'status_sekolah' => 'Swasta'],
             ['nama_satuan_pendidikan' => 'SLB AL IKHSAN 1 BAGOR', 'npsn' => '69831497', 'bentuk_pendidikan' => 'SLB', 'status_sekolah' => 'Swasta'],
             ['nama_satuan_pendidikan' => 'SLB AL IKHSAN 2 BARON', 'npsn' => '69904837', 'bentuk_pendidikan' => 'SLB', 'status_sekolah' => 'Swasta'],
             ['nama_satuan_pendidikan' => 'SLB Dharma Bakti Patianrowo', 'npsn' => '20549449', 'bentuk_pendidikan' => 'SLB', 'status_sekolah' => 'Swasta'],

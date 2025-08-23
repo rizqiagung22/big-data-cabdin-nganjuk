@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable; // Pastikan 'HasApiTokens' ada di sini
 
     /**
      * The attributes that are mass assignable.
@@ -30,8 +30,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
+        'email_verified_at',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -46,4 +50,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    /**
+     * Dapatkan pengajuan cuti yang diajukan oleh pengguna ini.
+     */
+    /**
+     * Dapatkan pengajuan cuti yang disetujui/ditolak oleh pengguna ini (jika peran atasan).
+     */
+
 }

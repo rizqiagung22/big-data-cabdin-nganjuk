@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_laporan_tahunan', function (Blueprint $table) {
+        Schema::create('laporan_tahunan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tahun_id')->constrained('tahun')->onDelete('cascade')->on; // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
             $table->foreignId('lembaga_id')->constrained('lembaga')->onDelete('cascade'); // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
