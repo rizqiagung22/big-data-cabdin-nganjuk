@@ -35,6 +35,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('is-super-admin-or-admin', function (User $user) {
             return $user->role === 'superadmin' || $user->role === 'admin';
         });
+        Gate::define('is-super-admin-or-user', function (User $user) {
+            return $user->role === 'superadmin' || $user->role === 'user';
+        });
         // user adalah pimpinan, yang hanya bisa download file yang sudah di upload admin
         Gate::define('is-user', function (User $user) {
             return $user->role === 'user';

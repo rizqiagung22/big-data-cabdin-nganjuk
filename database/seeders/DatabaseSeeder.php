@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TahunSeeder::class,
             LembagaSeeder::class,
-            LaporanTahunanSeeder::class
+            Bpopp::class
         ]);
     }
 }

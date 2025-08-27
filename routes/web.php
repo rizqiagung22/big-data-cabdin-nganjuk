@@ -11,8 +11,9 @@ Route::get('api/lembaga', [App\Http\Controllers\Api\LembagaController::class, 'i
 
 Route::get(BPOPP_ROUTE, [App\Http\Controllers\Api\LaporanTahunanController::class, 'index']);
 Route::post(BPOPP_ROUTE, [App\Http\Controllers\Api\LaporanTahunanController::class, 'store']);
-Route::put(BPOPP_ROUTE . '/{laporanTahunan}', [App\Http\Controllers\Api\LaporanTahunanController::class, 'update']);
 Route::delete(BPOPP_ROUTE . '/{laporanTahunan}', [App\Http\Controllers\Api\LaporanTahunanController::class, 'destroy']);
+Route::post(BPOPP_ROUTE . '/update-file/{laporanTahunan}', [App\Http\Controllers\Api\LaporanTahunanController::class, 'updateFile']);
+Route::get(BPOPP_ROUTE . '/download/{laporanTahunan}', [App\Http\Controllers\Api\LaporanTahunanController::class, 'download']);
 
 
 Route::get('api/user', [App\Http\Controllers\Api\AuthController::class, 'getUser'])->middleware('auth:sanctum');

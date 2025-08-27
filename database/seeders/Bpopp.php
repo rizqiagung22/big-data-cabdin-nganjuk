@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class LaporanTahunanSeeder extends Seeder
+class Bpopp extends Seeder
 {
     /**
      * Run the database seeds.
@@ -30,6 +30,7 @@ class LaporanTahunanSeeder extends Seeder
                         'lembaga_id' => $lembagaId,
                         'jenis_laporan' => $jenis,
                         'path' => 'laporan/' . str_replace(' ', '_', $jenis) . '/lembaga_' . $lembagaId . '_tahun_' . $tahunId . '.pdf',
+                        'name_file' => 'lembaga_' . $lembagaId . '_tahun_' . $tahunId . '.pdf',
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),
                     ];
@@ -37,7 +38,6 @@ class LaporanTahunanSeeder extends Seeder
             }
         }
 
-        // Masukkan semua data ke dalam tabel 'laporan_tahunan'
-        DB::table('laporan_tahunan')->insert($data);
+        DB::table('bpopp')->insert($data);
     }
 }

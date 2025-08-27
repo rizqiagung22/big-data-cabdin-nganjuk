@@ -1,0 +1,1 @@
+import{D as a}from"./index-C2Jg13uz.js";import{h as e}from"./axios.plugin-kNBfGAwQ.js";const r=async()=>{try{return await e.get("/tahun")}catch(t){throw console.error("Error caught in catch:",t),t.response}},n=a("tahun",{state:()=>({selected:null,data:[]}),actions:{async fetchDataTahun(){const t=await r();this.data=t.data.data},setSelected(t){this.selected=t}}});export{n as u};

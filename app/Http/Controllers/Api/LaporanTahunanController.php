@@ -6,52 +6,62 @@ use App\Http\Controllers\Controller;
 use App\Models\LaporanTahunan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; // Import fasad Storage
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
 class LaporanTahunanController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('can:is-super-admin-or-admin')->only(['index']);
+        $this->middleware('can:is-super-admin-or-user')->only(['download']);
     }
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         try {
-            // Validasi input: pastikan 'tahun_id' ada dan merupakan integer
+            // Validasi input
             $request->validate([
+                'search' => 'nullable|string',
                 'tahun_id' => 'required|integer|exists:tahun,id',
-                'size' => 'nullable|integer|min:1', // Validasi size (optional)
-                'page' => 'nullable|integer|min:1', // Validasi page (optional)
+                'size' => 'nullable|integer|min:1',
+                'page' => 'nullable|integer|min:1',
             ]);
 
-            // Dapatkan size dan page dari request, default 15
+            // Dapatkan size dan page dari request
             $size = $request->input('size', 15);
             $page = $request->input('page', 1);
 
-            // Mengambil semua data laporan tahunan untuk tahun yang dipilih
-            $laporan = LaporanTahunan::with(['lembaga', 'tahun'])
-                ->where('tahun_id', $request->tahun_id)
-                ->get();
+            // Mengambil semua data laporan tahunan untuk tahun yang dipilih dengan filter pencarian
+            $query = LaporanTahunan::with(['lembaga', 'tahun'])
+                ->where('tahun_id', $request->tahun_id);
 
-            // Mendefinisikan semua jenis laporan yang mungkin ada
-            $jenisLaporan = ['pagu', 'rkas', 'usulan per bulan', 'realisasi', 'penyerapan tiap bulan'];
+            // Menambahkan kondisi pencarian jika 'search' ada
+            if ($request->has('search')) {
+                $query->whereHas('lembaga', function ($q) use ($request) {
+                    $q->where('nama_satuan_pendidikan', 'like', '%' . $request->search . '%');
+                });
+            }
+
+            $laporan = $query->get();
 
             // Mengelompokkan data laporan berdasarkan 'lembaga_id'
             $groupedByLembaga = $laporan->groupBy('lembaga_id');
 
-            // Ambil informasi tahun ajaran dari salah satu item laporan
+            // Mengambil informasi tahun ajaran dari salah satu item laporan
             $tahunAjaran = $laporan->first()->tahun->tahun ?? null;
 
             $lembagaList = [];
 
             if ($groupedByLembaga->isNotEmpty()) {
+                $jenisLaporan = ['pagu', 'rkas', 'usulan per bulan', 'realisasi', 'penyerapan tiap bulan'];
+
                 // Memproses setiap kelompok lembaga di dalam tahun
                 foreach ($groupedByLembaga as $lembagaItems) {
-                    $lembaga = $lembagaItems->first()->lembaga; // Ambil data lembaga dari item pertama
+                    $lembaga = $lembagaItems->first()->lembaga;
 
                     // Siapkan array laporan dengan nilai default null
                     $laporan = array_fill_keys($jenisLaporan, null);
@@ -60,6 +70,8 @@ class LaporanTahunanController extends Controller
                     foreach ($lembagaItems as $item) {
                         $laporan[$item->jenis_laporan->value] = [
                             'id' => $item->id,
+                            'tahun_id' => $item->tahun_id,
+                            'name_file' => $item->name_file,
                             'path' => $item->path,
                         ];
                     }
@@ -114,47 +126,55 @@ class LaporanTahunanController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validasi input
+            // 1. Validasi input dari request
             $request->validate([
                 'tahun_id' => 'required|integer|exists:tahun,id',
                 'lembaga_id' => 'required|integer|exists:lembaga,id',
-                'jenis_laporan' => 'required|in:pagu,rkas,usulan per bulan,realisasi,penyerapan tiap bulan',
-                'file' => 'required|file|mimes:pdf|max:2048', // Pastikan hanya file PDF dan ukuran maks 2MB
+                'jenis_laporan' => 'required|string|in:pagu,rkas,usulan per bulan,realisasi,penyerapan tiap bulan',
+                'report_file' => 'required|file|mimes:pdf,xls,xlsx,doc,docx|max:10240', // Maksimal 10MB
             ]);
 
-            // Dapatkan semua data dari request
-            $tahunId = $request->input('tahun_id');
-            $lembagaId = $request->input('lembaga_id');
-            $jenisLaporan = $request->input('jenis_laporan');
-            $file = $request->file('file');
+            // 2. Pengecekan duplikasi sebelum mengunggah
+            $existingRecord = LaporanTahunan::where('tahun_id', $request->tahun_id)
+                ->where('lembaga_id', $request->lembaga_id)
+                ->where('jenis_laporan', $request->jenis_laporan)
+                ->first();
 
-            // Bangun jalur penyimpanan file
-            $folderPath = 'laporan/' . $tahunId . '/' . $lembagaId;
-            $fileName = $jenisLaporan . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs($folderPath, $fileName, 'public');
+            if ($existingRecord) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Laporan dengan kombinasi tahun, lembaga, dan jenis yang sama sudah ada.',
+                ], 409); // 409 Conflict
+            }
 
-            // Menggunakan updateOrCreate untuk menangani batasan unik
-            LaporanTahunan::updateOrCreate(
-                [
-                    'tahun_id' => $tahunId,
-                    'lembaga_id' => $lembagaId,
-                    'jenis_laporan' => $jenisLaporan
-                ],
-                [
-                    'path' => $filePath
-                ]
-            );
+            // 3. Simpan file yang diunggah
+            $file = $request->file('report_file');
+            $originalName = $file->getClientOriginalName();
+            $path = $file->store('laporan-tahunan', 'public');
+
+            // 4. Simpan data ke database dalam transaksi
+            DB::beginTransaction();
+            $laporan = LaporanTahunan::create([
+                'tahun_id' => $request->tahun_id,
+                'lembaga_id' => $request->lembaga_id,
+                'jenis_laporan' => $request->jenis_laporan,
+                'name_file' => $originalName,
+                'path' => $path,
+            ]);
+
+            DB::commit();
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'File berhasil diunggah dan data disimpan.',
-                'path' => Storage::url($filePath),
-            ]);
+                'message' => 'Laporan berhasil diunggah dan disimpan.',
+                'data' => $laporan,
+            ], 201); // 201 Created
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => 'error',
-                'message' => 'Gagal mengunggah file: ' . $e->getMessage(),
+                'message' => 'Gagal mengunggah laporan: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -170,45 +190,43 @@ class LaporanTahunanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LaporanTahunan $laporanTahunan)
+    public function update(Request $request, LaporanTahunan $laporanTahunan){}
+    public function updateFile(Request $request, LaporanTahunan $laporanTahunan)
     {
         try {
-            // Validasi input
+            // 1. Validasi input: hanya file yang diwajibkan
             $request->validate([
-                'file' => 'required|file|mimes:pdf|max:2048', // Hanya file yang dibutuhkan untuk update
+                'report_file' => 'required|file|mimes:pdf,xls,xlsx,doc,docx|max:10240', // Maksimal 10MB
             ]);
+            // 2. Simpan data ke database dalam transaksi
+            DB::beginTransaction();
 
-            // Cari laporan berdasarkan ID
-            $laporan = LaporanTahunan::findOrFail($laporanTahunan);
-
-            // Hapus file lama jika ada
-            if (Storage::disk('public')->exists($laporan->path)) {
-                Storage::disk('public')->delete($laporan->path);
+            // 3. Hapus file lama jika ada
+            if ($laporanTahunan->path && Storage::disk('public')->exists($laporanTahunan->path)) {
+                Storage::disk('public')->delete($laporanTahunan->path);
             }
 
-            // Dapatkan data file baru dari request
-            $file = $request->file('file');
-            $jenisLaporan = $laporan->jenis_laporan->value; // Ambil nilai enum dari model
-            $tahunId = $laporan->tahun_id;
-            $lembagaId = $laporan->lembaga_id;
+            // 4. Unggah file baru
+            $file = $request->file('report_file');
+            $originalName = $file->getClientOriginalName();
+            $path = $file->store('laporan-tahunan', 'public');
 
-            // Bangun jalur penyimpanan file baru
-            $folderPath = 'laporan/' . $tahunId . '/' . $lembagaId;
-            $fileName = $jenisLaporan . '.' . $file->getClientOriginalExtension();
-            $newFilePath = $file->storeAs($folderPath, $fileName, 'public');
-
-            // Perbarui jalur file di database
-            $laporan->update([
-                'path' => $newFilePath,
+            // 5. Perbarui entri database
+            $laporanTahunan->update([
+                'name_file' => $originalName,
+                'path' => $path,
             ]);
+
+            DB::commit();
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'File laporan berhasil diperbarui.',
-                'path' => Storage::url($newFilePath),
-            ]);
+                'data' => $laporanTahunan,
+            ], 200);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => 'error',
                 'message' => 'Gagal memperbarui file: ' . $e->getMessage(),
@@ -222,14 +240,13 @@ class LaporanTahunanController extends Controller
     {
         try {
             // Cari laporan berdasarkan ID
-            $laporan = LaporanTahunan::findOrFail($laporanTahunan);
             // Hapus file fisik dari penyimpanan
-            if ($laporan->path && Storage::disk('public')->exists($laporan->path)) {
-                Storage::disk('public')->delete($laporan->path);
+            if ($laporanTahunan->path && Storage::disk('public')->exists($laporanTahunan->path)) {
+                Storage::disk('public')->delete($laporanTahunan->path);
             }
 
             // Hapus entri dari database
-            $laporan->delete();
+            $laporanTahunan->delete();
 
             return response()->json([
                 'status' => 'success',
@@ -240,6 +257,38 @@ class LaporanTahunanController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Gagal menghapus laporan: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function download(LaporanTahunan $laporanTahunan)
+    {
+        try {
+            // 1. Cari data laporan berdasarkan ID
+            $filePath = $laporanTahunan->path;
+            $fileName = $laporanTahunan->name_file;
+
+            // 2. Cek apakah file benar-benar ada di storage
+            if (!Storage::disk('public')->exists($filePath)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'File tidak ditemukan di server.',
+                ], 404); // 404 Not Found
+            }
+
+            // 3. Kirim file sebagai response
+            return Storage::disk('public')->download($filePath, $fileName);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Tangani jika ID tidak ditemukan di database
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Laporan dengan ID tersebut tidak ditemukan.',
+            ], 404);
+        } catch (\Exception $e) {
+            // Tangani kesalahan umum lainnya
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengunduh file: ' . $e->getMessage(),
             ], 500);
         }
     }

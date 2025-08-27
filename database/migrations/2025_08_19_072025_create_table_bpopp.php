@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laporan_tahunan', function (Blueprint $table) {
+        Schema::create('bpopp', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tahun_id')->constrained('tahun')->onDelete('cascade')->on; // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
             $table->foreignId('lembaga_id')->constrained('lembaga')->onDelete('cascade'); // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
             $table->enum('jenis_laporan', ['pagu', 'rkas', 'usulan per bulan', 'realisasi', 'penyerapan tiap bulan']);
+            $table->string('name_file')->nullable();
             $table->string('path')->nullable();
             $table->timestamps();
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_laporan_tahunan');
+        Schema::dropIfExists('bpopp');
     }
 };

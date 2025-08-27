@@ -15,7 +15,7 @@ class LaporanTahunan extends Model
      *
      * @var string
      */
-    protected $table = 'laporan_tahunan';
+    protected $table = 'bpopp';
 
     /**
      * Atribut yang dapat diisi secara massal (mass assignable).
@@ -26,6 +26,7 @@ class LaporanTahunan extends Model
         'tahun_id',
         'lembaga_id',
         'jenis_laporan',
+        'name_file',
         'path',
     ];
 
