@@ -14,7 +14,7 @@ class LaporanTahunanController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('can:is-super-admin-or-user')->only(['download']);
+        $this->middleware('can:is-super-admin-or-admin')->only(['store', 'updateFile']);
     }
     /**
      * Display a listing of the resource.
