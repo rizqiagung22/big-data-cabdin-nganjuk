@@ -19,17 +19,17 @@ class TahunSeeder extends Seeder
         // Data dengan format string
         $data = [
             [
-                'tahun' => '2023/2024',
+                'tahun' => '2023',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'tahun' => '2024/2025',
+                'tahun' => '2024',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'tahun' => '2025/2026',
+                'tahun' => '2026',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

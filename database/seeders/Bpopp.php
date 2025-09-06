@@ -17,7 +17,7 @@ class Bpopp extends Seeder
     {
         // Mendefinisikan semua jenis laporan yang tersedia
         $jenisLaporan = ['pagu', 'rkas', 'usulan per bulan', 'realisasi', 'penyerapan tiap bulan'];
-        $tahunIds = [1, 2];
+        $tahunIds = [1, 2, 3];
         $lembagaIds = range(1, 97);
         $data = []; // Array untuk menyimpan semua data
 

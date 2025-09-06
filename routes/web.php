@@ -7,6 +7,10 @@ Route::post('api/login', [App\Http\Controllers\Api\AuthController::class, 'login
 
 
 Route::get('api/tahun', [App\Http\Controllers\Api\TahunController::class, 'index']);
+Route::post('api/tahun', [App\Http\Controllers\Api\TahunController::class, 'store']);
+Route::put('api/tahun/{tahun}', [App\Http\Controllers\Api\TahunController::class, 'update']);
+Route::delete('api/tahun/{tahun}', [App\Http\Controllers\Api\TahunController::class, 'destroy']);
+
 Route::get('api/lembaga', [App\Http\Controllers\Api\LembagaController::class, 'index']);
 
 Route::get(BPOPP_ROUTE, [App\Http\Controllers\Api\LaporanTahunanController::class, 'index']);
