@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
+
 class TahunController extends Controller
 {
     public function __construct()
@@ -100,8 +101,8 @@ class TahunController extends Controller
                         'tahun_id' => $tahunId,
                         'lembaga_id' => $lembagaId,
                         'jenis_laporan' => $jenis,
-                        'path' => 'laporan/' . str_replace(' ', '_', $jenis) . '/lembaga_' . $lembagaId . '_tahun_' . $tahunId . '.pdf',
-                        'name_file' => 'lembaga_' . $lembagaId . '_tahun_' . $tahunId . '.pdf',
+                        'path' => null,
+                        'name_file' => null,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),
                     ];
@@ -110,7 +111,55 @@ class TahunController extends Controller
 
             // 5. Lakukan batch insert ke database
             DB::table('bpopp')->insert($data);
+            DB::table('bos')->insert($data);
 
+            $data2 = [];
+            $jenjang = ['SMA', 'SMK', 'SLB'];
+            foreach ($jenjang as $jenjangItem) {
+                $data2[] = [
+                    'tahun_id' => $tahunId,
+                    'jenjang' => $jenjangItem,
+                    'path' => null,
+                    'name_file' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
+            DB::table('bsm')->insert($data2);
+            DB::table('bksm')->insert($data2);
+            DB::table('pendistribusian_ijazah')->insert($data2);
+
+            $data3 = [];
+            $tingkat = ['Kecamatan', 'Kabupaten', 'Provinsi', 'Nasional', 'Internasional'];
+            foreach ($jenjang as $jenjangItem) {
+                foreach ($tingkat as $tingkatItem) {
+                $data3[] = [
+                    'tahun_id' => $tahunId,
+                    'jenjang' => $jenjangItem,
+                    'tingkat' => $tingkatItem,
+                    'path' => null,
+                    'name_file' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+                }
+            }
+            DB::table('prestasi_siswa')->insert($data3);
+
+
+            $data4 = [];
+            $jenjangTracerStudy = ['SMA', 'SMK'];
+            foreach ($jenjangTracerStudy as $jenjangItem) {
+                $data4[] = [
+                    'tahun_id' => $tahunId,
+                    'jenjang' => $jenjangItem,
+                    'path' => null,
+                    'name_file' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
+            DB::table('tracer_study')->insert($data4);
             // 6. Jika semua operasi berhasil, commit transaksi
             DB::commit();
 
@@ -133,7 +182,7 @@ class TahunController extends Controller
                 'message' => 'Gagal membuat laporan.',
                 'error' => $e->getMessage()
             ], 500);
-       }
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class Bpopp extends Seeder
+class bos extends Seeder
 {
     /**
      * Run the database seeds.

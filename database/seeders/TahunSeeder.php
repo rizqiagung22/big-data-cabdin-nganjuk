@@ -36,6 +36,6 @@ class TahunSeeder extends Seeder
         ];
 
         // Masukkan data ke dalam tabel 'tahun'
-        DB::table('tahun')->insert($data);
+//        DB::table('tahun')->insert($data);
     }
 }

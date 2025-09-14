@@ -57,15 +57,15 @@ class AuthController extends Controller
     {
         // Validasi input email dan password
         $request->validate([
-            'email' => 'required|string|email',
+            'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
         // Coba untuk mengautentikasi pengguna
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('username', 'password'))) {
             // Jika autentikasi gagal, lempar exception validasi
             throw ValidationException::withMessages([
-                'email' => [trans('auth.failed')], // Menggunakan pesan default Laravel untuk login gagal
+                'username' => [trans('auth.failed')], // Menggunakan pesan default Laravel untuk login gagal
             ]);
         }
 

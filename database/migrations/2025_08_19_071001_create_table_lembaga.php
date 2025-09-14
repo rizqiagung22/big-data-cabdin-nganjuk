@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('lembaga', function (Blueprint $table) {
             $table->id();
             $table->string('nama_satuan_pendidikan');
-            $table->string('npsn')->unique();
-            $table->enum('bentuk_pendidikan', ['SLB', 'SMA', 'SMK']); // Menggunakan tipe data ENUM
-            $table->enum('status_sekolah', ['Negeri', 'Swasta']);     // Menggunakan tipe data ENUM
+            $table->string('npsn')->nullable();
+            $table->enum('bentuk_pendidikan', ['SLB', 'SMA', 'SMK'])->nullable(); // Menggunakan tipe data ENUM
+            $table->enum('status_sekolah', ['Negeri', 'Swasta'])->nullable();     // Menggunakan tipe data ENUM
             $table->timestamps();
         });
     }

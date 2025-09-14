@@ -1,0 +1,1 @@
+import{$ as e}from"./index-BQYtnNF3.js";const r=e("FilterAdminBos",{state:()=>({search:"",tahun:null}),actions:{setSearch(t){this.search=t},setTahun(t){this.tahun=t},resetFilter(){this.search="",this.tahun=null}}});export{r as u};

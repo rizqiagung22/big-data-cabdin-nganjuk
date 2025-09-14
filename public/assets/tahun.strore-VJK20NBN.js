@@ -1,0 +1,1 @@
+import{$ as a}from"./index-BQYtnNF3.js";import{a as e}from"./global.service-BlmddMAm.js";const o=a("tahun",{state:()=>({selected:null,data:[]}),actions:{async fetchDataTahun(){const t=await e();this.data=t.data.data},setSelected(t){this.selected=t}}});export{o as u};

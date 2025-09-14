@@ -14,61 +14,79 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // super admin
         User::create([
-            'name' => 'superadmin',
-            'email' => 'superadmin@cabdin.com',
-            'password' => Hash::make('password123'),
+            'name' => 'Rizqi Agung Dwi Nugraha, S.T.',
+            'username' => 'rizqi123',
+            'gender' => 'L',
+            'password' => Hash::make('123'),
             'role' => 'superadmin',
             'email_verified_at' => now(),
         ]);
         User::create([
-            'name' => 'admin 1',
-            'email' => 'admin1@cabdin.com',
-            'password' => Hash::make('password123'),
-            'role' => 'admin',
+            'name' => 'Moh. Nahrowi, S.Kom',
+            'username' => 'nahrowi123',
+            'gender' => 'L',
+            'password' => Hash::make('nahrowi123'),
+            'role' => 'superadmin',
             'email_verified_at' => now(),
         ]);
+        // user
         User::create([
-            'name' => 'admin 2',
-            'email' => 'admin2@cabdin.com',
-            'password' => Hash::make('password123'),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
-        User::create([
-            'name' => 'admin 3',
-            'email' => 'admin3@cabdin.com',
-            'password' => Hash::make('password123'),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
-        User::create([
-            'name' => 'admin 4',
-            'email' => 'admin4@cabdin.com',
-            'password' => Hash::make('password123'),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
-
-        User::create([
-            'name' => 'user 1',
-            'email' => 'user1@cabdin.com',
-            'password' => Hash::make('password123'),
+            'name' => 'Iwan Triyono, S.H.',
+            'username' => 'iwan',
+            'gender' => 'L',
+            'password' => Hash::make('iwan'),
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
         User::create([
-            'name' => 'user 2',
-            'email' => 'user2@cabdin.com',
-            'password' => Hash::make('password123'),
+            'name' => 'Tekey Widiastuti, SE',
+            'username' => 'tekey',
+            'gender' => 'P',
+            'password' => Hash::make('tekey'),
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
+        // admin
         User::create([
-            'name' => 'user 3',
-            'email' => 'user3@cabdin.com',
-            'password' => Hash::make('password123'),
-            'role' => 'user',
+            'name' => 'Risma Cintya Wati, SH.',
+            'username' => 'risma',
+            'gender' => 'P',
+            'password' => Hash::make('risma'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Aning Wahyu Lianti, S.Pd.',
+            'username' => 'aning',
+            'gender' => 'P',
+            'password' => Hash::make('aning'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Indonesiana Novita, S.Pd.',
+            'username' => 'novi',
+            'gender' => 'P',
+            'password' => Hash::make('novi'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Priyo Budiarto, S.Pd., SM., M.AP.',
+            'username' => 'priyo',
+            'gender' => 'L',
+            'password' => Hash::make('priyo'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
+            'name' => 'Anggrahita Satrio Wiwoho, SE.',
+            'username' => 'angga',
+            'gender' => 'L',
+            'password' => Hash::make('angga'),
+            'role' => 'admin',
             'email_verified_at' => now(),
         ]);
     }
