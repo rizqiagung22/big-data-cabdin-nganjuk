@@ -1,0 +1,1 @@
+import{h as a}from"./axios.plugin-CVK5CeTo.js";const n=async()=>{try{return await a.get("/tahun")}catch(r){throw console.error("Error caught in catch:",r),r.response}},e=async r=>{try{return await a.get("/tahun",{params:r})}catch(t){throw console.error("Error caught in catch:",t),t.response}};export{e as a,n as g};
