@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'gender' => 'L',
             'password' => Hash::make('123'),
             'role' => 'superadmin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
         User::create([
@@ -29,6 +30,7 @@ class UserSeeder extends Seeder
             'gender' => 'L',
             'password' => Hash::make('nahrowi123'),
             'role' => 'superadmin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
         // user
@@ -38,6 +40,7 @@ class UserSeeder extends Seeder
             'gender' => 'L',
             'password' => Hash::make('iwan'),
             'role' => 'user',
+            'position' => 'Pejabat/Esselon',
             'email_verified_at' => now(),
         ]);
         User::create([
@@ -46,6 +49,7 @@ class UserSeeder extends Seeder
             'gender' => 'P',
             'password' => Hash::make('tekey'),
             'role' => 'user',
+            'position' => 'Pejabat/Esselon',
             'email_verified_at' => now(),
         ]);
         // admin
@@ -55,6 +59,7 @@ class UserSeeder extends Seeder
             'gender' => 'P',
             'password' => Hash::make('risma'),
             'role' => 'admin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
         User::create([
@@ -63,6 +68,7 @@ class UserSeeder extends Seeder
             'gender' => 'P',
             'password' => Hash::make('aning'),
             'role' => 'admin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
         User::create([
@@ -71,6 +77,7 @@ class UserSeeder extends Seeder
             'gender' => 'P',
             'password' => Hash::make('novi'),
             'role' => 'admin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
         User::create([
@@ -79,6 +86,7 @@ class UserSeeder extends Seeder
             'gender' => 'L',
             'password' => Hash::make('priyo'),
             'role' => 'admin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
         User::create([
@@ -87,6 +95,7 @@ class UserSeeder extends Seeder
             'gender' => 'L',
             'password' => Hash::make('angga'),
             'role' => 'admin',
+            'position' => 'Staf',
             'email_verified_at' => now(),
         ]);
     }

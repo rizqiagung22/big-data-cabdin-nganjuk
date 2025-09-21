@@ -160,6 +160,20 @@ class TahunController extends Controller
                 ];
             }
             DB::table('tracer_study')->insert($data4);
+
+            $data5 = [];
+            $assetTriwulan = ['1','2','3','4'];
+
+            foreach ($jenjangTracerStudy as $assetTriwulan) {
+                $data4[] = [
+                    'tahun_id' => $tahunId,
+                    'jenjang' => $jenjangItem,
+                    'path' => null,
+                    'name_file' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
             // 6. Jika semua operasi berhasil, commit transaksi
             DB::commit();
 
