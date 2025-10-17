@@ -22,6 +22,12 @@ return new class extends Migration
             $table->foreignId('bm_id_3')->constrained('belanja_modal')->onDelete('cascade')->on; // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
             // tri wulan 4
             $table->foreignId('bm_id_4')->constrained('belanja_modal')->onDelete('cascade')->on; // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
+
+            $table->string('scan_name_file')->nullable(); //
+            $table->string('scan_path')->nullable(); //
+            $table->string('sertifikat_name_file')->nullable(); //
+            $table->string('sertifikat_path')->nullable(); //
+
             $table->timestamps();
             // Menambahkan unique constraint untuk memastikan yang unik
             $table->unique(['tahun_id', 'bm_id_1', 'bm_id_2', 'bm_id_3', 'bm_id_4']);

@@ -1,0 +1,1 @@
+import{h as t}from"./axios.plugin-btxbHCK1.js";const c=async r=>{try{return await t.post("/login",r)}catch(o){throw console.error("Error caught in catch:",o),o.response}},s=async()=>{try{return await t.get("/user")}catch(r){throw console.error("Error caught in catch:",r),r.response}};export{c as l,s as u};

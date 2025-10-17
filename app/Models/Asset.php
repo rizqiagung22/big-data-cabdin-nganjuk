@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Bos extends Model
+class Asset extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Bos extends Model
      *
      * @var string
      */
-    protected $table = 'bos';
+    protected $table = 'asset';
 
     /**
      * Atribut yang dapat diisi secara massal (mass assignable).
@@ -24,10 +24,14 @@ class Bos extends Model
      */
     protected $fillable = [
         'tahun_id',
-        'lembaga_id',
-        'jenis_laporan',
-        'name_file',
-        'path',
+        'bm_id_1',
+        'bm_id_2',
+        'bm_id_3',
+        'bm_id_4',
+        'scan_name_file',
+        'scan_path',
+        'sertifikat_name_file',
+        'sertifikat_path',
     ];
 
 
@@ -45,18 +49,29 @@ class Bos extends Model
      *
      * @return BelongsTo
      */
+
     public function tahun(): BelongsTo
     {
         return $this->belongsTo(Tahun::class);
     }
-
-    /**
-     * Mendefinisikan relasi ke model Lembaga.
-     *
-     * @return BelongsTo
-     */
-    public function lembaga(): BelongsTo
+    public function belanjaModal1(): BelongsTo
     {
-        return $this->belongsTo(Lembaga::class);
+        return $this->belongsTo(AssetBelanja::class, 'bm_id_1');
     }
+    public function belanjaModal2(): BelongsTo
+    {
+        return $this->belongsTo(AssetBelanja::class, 'bm_id_2');
+    }
+
+    public function belanjaModal3(): BelongsTo
+    {
+        return $this->belongsTo(AssetBelanja::class, 'bm_id_3');
+    }
+
+    public function belanjaModal4(): BelongsTo
+    {
+        return $this->belongsTo(AssetBelanja::class, 'bm_id_4');
+    }
+
+
 }

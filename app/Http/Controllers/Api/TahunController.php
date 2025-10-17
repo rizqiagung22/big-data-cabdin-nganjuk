@@ -133,15 +133,15 @@ class TahunController extends Controller
             $tingkat = ['Kecamatan', 'Kabupaten', 'Provinsi', 'Nasional', 'Internasional'];
             foreach ($jenjang as $jenjangItem) {
                 foreach ($tingkat as $tingkatItem) {
-                $data3[] = [
-                    'tahun_id' => $tahunId,
-                    'jenjang' => $jenjangItem,
-                    'tingkat' => $tingkatItem,
-                    'path' => null,
-                    'name_file' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ];
+                    $data3[] = [
+                        'tahun_id' => $tahunId,
+                        'jenjang' => $jenjangItem,
+                        'tingkat' => $tingkatItem,
+                        'path' => null,
+                        'name_file' => null,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
                 }
             }
             DB::table('prestasi_siswa')->insert($data3);
@@ -161,22 +161,43 @@ class TahunController extends Controller
             }
             DB::table('tracer_study')->insert($data4);
 
-            $data5 = [];
-            $assetTriwulan = ['1','2','3','4'];
+            $assetTriwulan = ['1', '2', '3', '4'];
+            $bmIds = [];
 
-            foreach ($jenjangTracerStudy as $assetTriwulan) {
-                $data4[] = [
-                    'tahun_id' => $tahunId,
-                    'jenjang' => $jenjangItem,
-                    'path' => null,
-                    'name_file' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ];
+            foreach ($assetTriwulan as $triwulan) {
+                $bmIds[] = DB::table('belanja_modal')->insertGetId([
+                    "tahun_id" => $tahunId,
+                    "bos_name_file" => null,
+                    "bos_path" => null,
+                    "bpopp_name_file" => null,
+                    "bpopp_path" => null,
+                    "bp_name_file" => null,
+                    "bp_path" => null,
+                    "pm_name_file" => null,
+                    "pm_path" => null,
+                    "type" => $triwulan,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
-            // 6. Jika semua operasi berhasil, commit transaksi
-            DB::commit();
 
+            // $bmIds = [id_triwulan_1, id_triwulan_2, id_triwulan_3, id_triwulan_4]
+
+            DB::table('asset')->insert([
+                "tahun_id" => $tahunId,
+                "bm_id_1" => $bmIds[0],
+                "bm_id_2" => $bmIds[1],
+                "bm_id_3" => $bmIds[2],
+                "bm_id_4" => $bmIds[3],
+                "scan_name_file" => null,
+                "scan_path" => null,
+                "sertifikat_name_file" => null,
+                "sertifikat_path" => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Data laporan berhasil dibuat.',

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('belanja_modal', function (Blueprint $table) { // belanja modal
             $table->id();
+            $table->foreignId('tahun_id')->constrained('tahun')->onDelete('cascade')->on; // jika data di parent di hapus, maka table yang di relesi disini akan ikut dihapus
             $table->string('bos_name_file')->nullable();
             $table->string('bos_path')->nullable();
             $table->string('bpopp_name_file')->nullable();

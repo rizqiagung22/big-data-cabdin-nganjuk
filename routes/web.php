@@ -6,6 +6,7 @@ const BPOPP_ROUTE = 'api/bpopp';
 const BOS_ROUTE = 'api/bos';
 const BKSM_ROUTE = 'api/bksm';
 const BSM_ROUTE = 'api/bsm';
+const ASSET_ROUTE = 'api/asset';
 const PENDISTRIBUSIAN_IJAZAH_ROUTE = 'api/pendistribusian-ijazah';
 
 const PRESTASI_SISWA_ROUTE = 'api/prestasi-siswa';
@@ -63,6 +64,16 @@ Route::post(TRACER_STUDY_ROUTE, [App\Http\Controllers\Api\TracerStudyController:
 Route::delete(TRACER_STUDY_ROUTE . '/{tracerStudy}', [App\Http\Controllers\Api\TracerStudyController::class, 'destroy']);
 Route::post(TRACER_STUDY_ROUTE . '/update-file/{tracerStudy}', [App\Http\Controllers\Api\TracerStudyController::class, 'updateFile']);
 Route::get(TRACER_STUDY_ROUTE . '/download/{tracerStudy}', [App\Http\Controllers\Api\TracerStudyController::class, 'download']);
+
+
+Route::get(ASSET_ROUTE, [App\Http\Controllers\Api\AssetController::class, 'index']);
+Route::delete(ASSET_ROUTE . '/{assetBelanja}', [App\Http\Controllers\Api\AssetController::class, 'destroy']);
+Route::post(ASSET_ROUTE . '/update-file/{assetBelanja}', [App\Http\Controllers\Api\AssetController::class, 'updateFile']);
+Route::get(ASSET_ROUTE . '/download/{assetBelanja}', [App\Http\Controllers\Api\AssetController::class, 'download']);
+
+Route::delete(ASSET_ROUTE . '/sertifikat-and-scan/{asset}', [App\Http\Controllers\Api\AssetController::class, 'destroySertifikatAndScan']);
+Route::post(ASSET_ROUTE . '/update-file/sertifikat-and-scan/{asset}', [App\Http\Controllers\Api\AssetController::class, 'updateFileSertifikatAndScan']);
+Route::get(ASSET_ROUTE . '/download/sertifikat-and-scan/{asset}', [App\Http\Controllers\Api\AssetController::class, 'downloadSertifikatAndScan']);
 
 Route::get('api/user', [App\Http\Controllers\Api\AuthController::class, 'getUser'])->middleware('auth:sanctum');
 

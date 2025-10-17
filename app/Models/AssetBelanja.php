@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Bos extends Model
+class AssetBelanja extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Bos extends Model
      *
      * @var string
      */
-    protected $table = 'bos';
+    protected $table = 'belanja_modal';
 
     /**
      * Atribut yang dapat diisi secara massal (mass assignable).
@@ -24,10 +24,14 @@ class Bos extends Model
      */
     protected $fillable = [
         'tahun_id',
-        'lembaga_id',
-        'jenis_laporan',
-        'name_file',
-        'path',
+        'bos_name_file',
+        'bos_path',
+        'bpopp_name_file',
+        'bpopp_path',
+        'bp_name_file',
+        'bp_path',
+        'pm_name_file',
+        'pm_path',
     ];
 
 
@@ -45,18 +49,10 @@ class Bos extends Model
      *
      * @return BelongsTo
      */
+
     public function tahun(): BelongsTo
     {
         return $this->belongsTo(Tahun::class);
     }
 
-    /**
-     * Mendefinisikan relasi ke model Lembaga.
-     *
-     * @return BelongsTo
-     */
-    public function lembaga(): BelongsTo
-    {
-        return $this->belongsTo(Lembaga::class);
-    }
 }
